@@ -5,7 +5,12 @@ import { MOBILE } from './lib/mobile.js'
 import { useStore } from './store/useStore.js'
 import { startMediaSync } from './lib/media-sync.js'
 import { startNativeKeyboard } from './lib/native-keyboard.js'
+import { PERSONAL } from './lib/demo.js'
+import { installSaves } from './lib/cloud.js'
 import './index.css'
+
+// Personal artifact build: exports go through the viewer's save prompt (lib/cloud.js).
+if (PERSONAL) installSaves()
 
 // App.jsx restores per-route scroll itself; the browser's own attempt races it.
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
@@ -23,7 +28,7 @@ startMediaSync(useStore)
 startNativeKeyboard()
 
 // Not in the mobile build: the native shell already serves everything from disk.
-if (!MOBILE && 'serviceWorker' in navigator && location.protocol === 'https:') {
+if (!MOBILE && !(PERSONAL && window.claude) && 'serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js').catch(() => {})
   // The plan's exercise media, kept by the worker for a workout opened without a network (#281).
   // It only fetches ahead while the page runs as the installed app; a tab keeps what it has shown.

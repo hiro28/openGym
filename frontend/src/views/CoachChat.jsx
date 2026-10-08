@@ -21,7 +21,7 @@ import { t, tn } from '../lib/i18n.js'
 import { fmtDate, fmtNum, DAYS, weekOrder, weekStartOf } from '../lib/format.js'
 import { exLine } from '../lib/history.js'
 import { speedUnitOf } from '../lib/speed.js'
-import { DEMO } from '../lib/demo.js'
+import { DEMO, PERSONAL } from '../lib/demo.js'
 import { MOBILE } from '../lib/mobile.js'
 import {
   coachAvailable, hasConsent, emptyCoach, appendChat, recordTiming, estimateMs, profileLines,
@@ -54,7 +54,7 @@ export default function CoachChat() {
   const prevJob = useRef(null)
   const coachMode = coachLocal?.mode
 
-  const ok = coachAvailable(config, user, { demo: DEMO, mobile: MOBILE, coachMode })
+  const ok = coachAvailable(config, user, { demo: DEMO && !PERSONAL, mobile: MOBILE, coachMode })
   const ready = ok && hasConsent(S) && !!S.coach?.profile
   // Not before the store has loaded: a cold start straight on #/coach would otherwise read an
   // empty state, decide there is no consent, and bounce a consenting user into the intake.

@@ -16,7 +16,7 @@ import { pushSupported, enablePush, disablePush, sendTestPush, syncPushSubscript
 import { wakeLockSupported } from '../lib/wakelock.js'
 import { t, tn, LANGS, INSTR_LANGS, EXERCISE_NAME_LANGS, baseLang, dateLocale } from '../lib/i18n.js'
 import { effectiveLang } from '../lib/default-lang.js'
-import { DEMO, REPO } from '../lib/demo.js'
+import { DEMO, REPO, PERSONAL } from '../lib/demo.js'
 import { MOBILE, isAndroid, shareExport, shareExportBlob, syncReminder } from '../lib/mobile.js'
 import { NUDGE_COPY, NUDGE_TONES, toneOf } from '../lib/nudge.js'
 import { referencedFiles } from '../lib/media-refs.js'
@@ -811,8 +811,12 @@ export default function Settings({ page = null, find = null, via = null }) {
       </ServerSyncSection>}
 
       {/* account (demo and mobile builds have nothing to sign in to) */}
-      {!(MOBILE && user) && <Section title={MOBILE ? t('Your data') : DEMO ? t('Demo') : t('Account')}>
-        {MOBILE ? <>
+      {!(MOBILE && user) && <Section title={MOBILE ? t('Your data') : PERSONAL ? t('Your data') : DEMO ? t('Demo') : t('Account')}>
+        {PERSONAL ? <>
+          {window.claude
+            ? <Row icon="lock" iconTint="var(--acc)" title="Saved privately to your Claude account" subtitle="Also kept in this browser. Open the same link on another device and it picks up where you left off." />
+            : <Row icon="lock" iconTint="var(--acc)" title="All data stays on this device" subtitle="No account, no server. Export a backup now and then in Data &amp; backup." />}
+        </> : MOBILE ? <>
           <Row icon="lock" iconTint="var(--acc)" title={t('All data stays on this phone')} subtitle={t('No account, no cloud. Back it up anytime in Data & backup.')} />
           <Row icon="cloud" iconTint="var(--indigo)" title={t('Connect to my server')} subtitle={t('Sync this device to your own self-hosted openGym instead.')} accessory="chevron"
             onClick={connectServer} />
@@ -887,7 +891,8 @@ function SettingsRoot({ ctx, preview, open, user, sync, home, go }) {
   const set = v => { lastQuery = { q: v, key }; setQ(v) }
   const hits = q.trim() ? searchSettings(q, ctx) : null
   // The account card: who this is, and the one line that matters about it.
-  const acct = DEMO ? { title: t('Demo'), sub: t('Example data, only in this browser.') }
+  const acct = PERSONAL ? { title: 'Your data', sub: window.claude ? 'Saved privately to your Claude account' : 'All data stays on this device' }
+    : DEMO ? { title: t('Demo'), sub: t('Example data, only in this browser.') }
     : user ? {
       title: user.name || t('Account'),
       sub: sync && sync.status && sync.status !== 'ok' ? t('Sync needs a look') : MOBILE ? t('Synced with your server') : t('Account, devices and sync'),

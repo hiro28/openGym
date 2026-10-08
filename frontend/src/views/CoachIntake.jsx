@@ -17,7 +17,7 @@ import { DAYN } from '../lib/format.js'
 import { EXDB } from '../lib/exercises.js'
 import { emptyCoach, coachAvailable, hasConsent, CONSENT_VERSION, CATEGORY_TEXT, appendChat } from '../lib/coach.js'
 import { requestPlan, disclosure, JOB_ERRORS } from '../lib/coach-api.js'
-import { DEMO } from '../lib/demo.js'
+import { DEMO, PERSONAL } from '../lib/demo.js'
 import { MOBILE } from '../lib/mobile.js'
 import Icon from '../components/Icon.jsx'
 import { Button, TextArea } from '../components/ui.jsx'
@@ -73,7 +73,7 @@ export default function CoachIntake() {
   }))
   const set = patch => setP(v => ({ ...v, ...patch }))
 
-  if (!coachAvailable(config, user, { demo: DEMO, mobile: MOBILE, coachMode })) { nav('/home', { replace: true }); return null }
+  if (!coachAvailable(config, user, { demo: DEMO && !PERSONAL, mobile: MOBILE, coachMode })) { nav('/home', { replace: true }); return null }
 
   const key = STEPS[step]
   const last = step === STEPS.length - 1

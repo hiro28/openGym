@@ -34,7 +34,7 @@ vi.mock('../lib/api.js', () => ({
   api: vi.fn(), passkeyAssertion: vi.fn(), passwordLogin: vi.fn(), passwordRegister: vi.fn(), passwordResetRedeem: vi.fn(),
   createPasskey: vi.fn(),
 }))
-vi.mock('../lib/demo.js', () => ({ DEMO: false, REPO: 'https://example.invalid' }))
+vi.mock('../lib/demo.js', () => ({ DEMO: false, PERSONAL: false, REPO: 'https://example.invalid' }))
 vi.mock('../sheets.jsx', () => ({ askAddDeviceData: vi.fn(), confirmSheet: vi.fn() }))
 
 const mounted = []

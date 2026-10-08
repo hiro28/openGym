@@ -30,7 +30,7 @@ vi.mock('../sheets.jsx', () => ({
   planHasRoutines: () => true, exportPlanFile: vi.fn(), printWholePlan: vi.fn(), importPlanFile: vi.fn(),
 }))
 vi.mock('../lib/mobile.js', () => ({ MOBILE: false }))
-vi.mock('../lib/demo.js', () => ({ DEMO: false }))
+vi.mock('../lib/demo.js', () => ({ DEMO: false, PERSONAL: false }))
 vi.mock('../lib/coach.js', () => ({ coachAvailable: () => false }))
 
 import Plan from './Plan.jsx'

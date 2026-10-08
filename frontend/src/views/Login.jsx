@@ -3,7 +3,7 @@ import { useUI } from '../store/useUI.js'
 import { webauthnOK, passkeyLogin, passkeyRegister, passkeyError, bio } from '../lib/api.js'
 import { hasData } from '../store/useStore.js'
 import { t } from '../lib/i18n.js'
-import { DEMO, REPO } from '../lib/demo.js'
+import { DEMO, REPO, PERSONAL } from '../lib/demo.js'
 import { guestAllowed } from '../lib/guest.js'
 import { useState, useRef, useEffect } from 'react'
 import Icon from '../components/Icon.jsx'
@@ -81,6 +81,16 @@ export default function Login() {
   </>
   const wrap = { display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '78vh', textAlign: 'center' }
 
+  if (PERSONAL) return (
+    <div className="narrow" style={wrap}>
+      {head}
+      <div className="muted" style={{ marginBottom: 30 }}>Your workouts. Your weights. Only in this browser.</div>
+      <Button variant="primary" icon="play" onClick={() => setGuest(true)}>Start</Button>
+      <div className="card small muted" style={{ textAlign: 'start', marginTop: 16 }}>
+        Everything you log is saved in this browser on this device. Nothing is sent anywhere. Export a backup from Settings → Data &amp; backup now and then.
+      </div>
+    </div>
+  )
   // Demo build: no backend to sign in against — the only way in is the local guest profile.
   if (DEMO) return (
     <div className="narrow" style={wrap}>
